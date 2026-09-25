@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="Entities/Entities.csproj" />
+  <Project Path="ServiceContracts/ServiceContracts.csproj" />
   <Project Path="Stocks App with xUnit/Stocks App with xUnit.csproj" />
 </Solution>
