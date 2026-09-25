@@ -18,7 +18,7 @@ public class StocksService : IStocksService
         _sellOrders = new List<SellOrder>();
     }
 
-    public BuyOrderResponse CreateBuyOrder(BuyOrderResponse? buyOrderRequest)
+    public BuyOrderResponse CreateBuyOrder(BuyOrderRequest? buyOrderRequest)
     {
         throw new NotImplementedException();
     }

@@ -52,7 +52,7 @@ public class BuyOrderResponse
 
         BuyOrderResponse other = (BuyOrderResponse)obj;
 
-        return BuyOrderId == other.BuyOrderID && StockSymbol == other.StockSymbol && StockName == other.StockName &&
+        return BuyOrderID == other.BuyOrderID && StockSymbol == other.StockSymbol && StockName == other.StockName &&
                DateAndTimeOfOrder == other.DateAndTimeOfOrder && Quantity == other.Quantity && Price == other.Price;
     }
 

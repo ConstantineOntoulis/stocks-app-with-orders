@@ -8,7 +8,7 @@ public interface IStocksService
     /// Creates a buy order
     /// </summary>
     /// <param name="buyOrderRequest">Buy order object</param>
-    BuyOrderResponse CreateBuyOrder(BuyOrderResponse? buyOrderRequest);
+    BuyOrderResponse CreateBuyOrder(BuyOrderRequest? buyOrderRequest);
     
     /// <summary>
     /// Creates a buy order
