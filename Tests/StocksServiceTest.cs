@@ -390,4 +390,66 @@ public class StocksServiceTest
     }
 
     #endregion
+
+    #region GetSellOrders
+
+    [Fact]
+    public void GetSellOrders_DefaultList()
+    {
+        //Act
+        List<SellOrderResponse> sellOrdersGet = _stocksService.GetSellOrders();
+        
+        //Assert
+        Assert.Empty(sellOrdersGet);
+    }
+
+    [Fact]
+    public void GetSellOrders_WithFewSellOrders()
+    {
+        //Arrange
+        
+        //Create a list of sell orders with hard-coded data
+        SellOrderRequest sellOrderRequest1 = new SellOrderRequest()
+        {
+            StockSymbol = "NVDA",
+            StockName = "nVidia",
+            Price = 1,
+            Quantity = 1,
+            DateAndTimeOfOrder = DateTime.Parse("2000-05-05 10:00")
+        };
+        
+        SellOrderRequest sellOrderRequest2 = new SellOrderRequest()
+        {
+            StockSymbol = "NVDA",
+            StockName = "nVidia",
+            Price = 1,
+            Quantity = 1,
+            DateAndTimeOfOrder = DateTime.Parse("2000-05-05 10:00")
+        };
+        
+        List<SellOrderRequest> sellOrderRequests = new List<SellOrderRequest>()
+        {
+            sellOrderRequest1,
+            sellOrderRequest2
+        };
+
+        List<SellOrderResponse> sellOrderResponse_ListForAdd = new List<SellOrderResponse>();
+
+        foreach (SellOrderRequest sellOrderRequest in sellOrderRequests)
+        {
+            SellOrderResponse sellOrderResponse = _stocksService.CreateSellOrder(sellOrderRequest);
+            sellOrderResponse_ListForAdd.Add(sellOrderResponse);
+        }
+        
+        //Act
+        List<SellOrderResponse> sellOrderResponse_Get = _stocksService.GetSellOrders();
+        
+        //Assert
+        foreach (SellOrderResponse sellOrderResponse_from_add in sellOrderResponse_ListForAdd)
+        {
+            Assert.Contains(sellOrderResponse_from_add, sellOrderResponse_Get);
+        }
+    }
+
+    #endregion
 }
