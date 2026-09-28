@@ -327,4 +327,67 @@ public class StocksServiceTest
     }
     
     #endregion
+
+    #region GetBuyOrders
+
+    //The GetAllBuyOrders() should return an empty list by default
+    [Fact]
+    public void GetAllBuyOrders_DefaultList()
+    {
+        //Act
+        List<BuyOrderResponse> buyOrdersGet =  _stocksService.GetBuyOrders();
+        
+        //Assert
+        Assert.Empty(buyOrdersGet);
+    }
+
+    [Fact]
+    public void GetAllBuyOrders_WithFewBuyOrders()
+    {
+        //Arrange
+        
+        //Create a list of buy orders with hard-coded data
+        BuyOrderRequest buyOrderRequest1 = new BuyOrderRequest()
+        {
+            StockSymbol = "NVDA",
+            StockName = "nVidia",
+            Price = 1,
+            Quantity = 1,
+            DateAndTimeOfOrder = DateTime.Parse("2000-05-05 10:00")
+        };
+        
+        BuyOrderRequest buyOrderRequest2 = new BuyOrderRequest()
+        {
+            StockSymbol = "NVDA",
+            StockName = "nVidia",
+            Price = 1,
+            Quantity = 1,
+            DateAndTimeOfOrder = DateTime.Parse("2000-05-05 10:00")
+        };
+
+        List<BuyOrderRequest> buyOrderResponse_List_Add = new List<BuyOrderRequest>()
+        {
+            buyOrderRequest1,
+            buyOrderRequest2
+        };
+
+        List<BuyOrderResponse> buyOrders_response = new List<BuyOrderResponse>();
+
+        foreach (BuyOrderRequest buyOrderRequest in buyOrderResponse_List_Add)
+        {
+            BuyOrderResponse buyOrderResponse = _stocksService.CreateBuyOrder(buyOrderRequest);
+            buyOrders_response.Add(buyOrderResponse);
+        }
+        
+        //Act
+        List<BuyOrderResponse> buyOrderResponse_Get = _stocksService.GetBuyOrders();
+        
+        //Assert
+        foreach (BuyOrderResponse buyOrder_response_from_add in buyOrders_response)
+        {
+            Assert.Contains(buyOrder_response_from_add, buyOrderResponse_Get);
+        }
+    }
+
+    #endregion
 }
