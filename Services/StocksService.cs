@@ -23,7 +23,7 @@ public class StocksService : IStocksService
         throw new NotImplementedException();
     }
 
-    public SellOrderResponse CreateSellOrder(SellOrderResponse? sellOrderRequest)
+    public SellOrderResponse CreateSellOrder(SellOrderRequest? sellOrderRequest)
     {
         throw new NotImplementedException();
     }

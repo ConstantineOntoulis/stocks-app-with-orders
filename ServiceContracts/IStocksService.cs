@@ -14,7 +14,7 @@ public interface IStocksService
     /// Creates a buy order
     /// </summary>
     /// <param name="sellOrderRequest">Sell order object</param>
-    SellOrderResponse CreateSellOrder(SellOrderResponse? sellOrderRequest);
+    SellOrderResponse CreateSellOrder(SellOrderRequest? sellOrderRequest);
 
     /// <summary>
     /// Returns all existing buy orders
