@@ -1,0 +1,108 @@
+@model StocksApp_Assignment.Models.StockDetails
+
+@{
+    ViewBag.Title = "Stock Details";
+}
+
+
+<input
+    type="hidden"
+    id="FinnhubToken"
+    value="@ViewBag.FinnhubToken" />
+
+<input
+    type="hidden"
+    id="StockSymbol"
+    value="@Model.StockSymbol" />
+
+
+<div class="box trading-panel">
+
+    <div class="stock">
+
+        <h1 class="stock-title">
+            @Model.StockSymbol
+        </h1>
+
+
+        <table>
+
+            <tbody>
+
+                <tr>
+                    <td>Current:</td>
+
+                    <th>
+                        <small>$</small>
+
+                        <span class="live-price">
+                            @Model.CurrentPrice.ToString("N2")
+                        </span>
+                    </th>
+                </tr>
+
+
+                <tr>
+                    <td>Change:</td>
+
+                    <th>
+                        @Model.Change.ToString("N2")
+                    </th>
+                </tr>
+
+
+                <tr>
+                    <td>Percent Change:</td>
+
+                    <th>
+                        @Model.PercentChange.ToString("N2")%
+                    </th>
+                </tr>
+
+
+                <tr>
+                    <td>Lowest:</td>
+
+                    <th>
+                        <small>$</small>
+
+                        @Model.LowestPrice.ToString("N2")
+                    </th>
+                </tr>
+
+
+                <tr>
+                    <td>Highest:</td>
+
+                    <th>
+                        <small>$</small>
+
+                        @Model.HighestPrice.ToString("N2")
+                    </th>
+                </tr>
+
+                <tr>
+                    <td>Previous Close:</td>
+
+                    <th>
+                        <small>$</small>
+
+                        @Model.PreviousClosePrice.ToString("N2")
+                    </th>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+
+        <a href="/">
+            Back
+        </a>
+
+    </div>
+
+</div>
+
+
+<script src="~/FinnhubScript.js"></script>

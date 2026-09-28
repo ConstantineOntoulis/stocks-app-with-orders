@@ -1,6 +1,6 @@
 namespace Stocks_App_with_xUnit.Models;
 
-public class Stocks
+public class StockTrade
 {
     public string? StockSymbol { get; set; }
     public string? StockName { get; set; }

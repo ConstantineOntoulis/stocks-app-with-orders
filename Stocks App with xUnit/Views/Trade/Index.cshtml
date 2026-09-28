@@ -1,0 +1,48 @@
+@model StocksApp_Assignment.Models.StockTrade
+
+@{
+    ViewBag.Title = "Trade";
+}
+
+<input
+    type="hidden"
+    id="FinnhubToken"
+    value="@ViewBag.FinnhubToken" />
+
+<input
+    type="hidden"
+    id="StockSymbol"
+    value="@Model.StockSymbol" />
+
+
+<div class="box trading-panel">
+
+    <div class="stock">
+
+        <h1>
+            @Model.StockName
+        </h1>
+
+        <h2>
+            @Model.StockSymbol
+        </h2>
+
+
+        <div>
+            <small>$</small>
+
+            <span class="live-price">
+                @Model.Price.ToString("N2")
+            </span>
+        </div>
+
+        <a href="/stock-details">
+            View stock details
+        </a>
+
+    </div>
+
+</div>
+
+
+<script src="/home/tino/RiderProjects/Stocks App with xUnit/Stocks App with xUnit/wwwroot/Scripts/FinnhubScript.js"></script>
