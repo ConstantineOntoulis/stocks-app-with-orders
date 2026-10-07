@@ -1,4 +1,4 @@
-namespace StocksApp_Assignment.Models;
+namespace Stocks_App_with_xUnit.Models;
 
 public class StockDetails
 {
@@ -13,6 +13,8 @@ public class StockDetails
     public double LowestPrice { get; set; }
 
     public double HighestPrice { get; set; }
+
+    public double OpenPrice { get; set; }
 
     public double PreviousClosePrice { get; set; }
 }

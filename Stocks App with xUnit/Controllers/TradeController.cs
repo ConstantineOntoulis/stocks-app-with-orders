@@ -3,72 +3,128 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ServiceContracts;
 using Stocks_App_with_xUnit.Models;
-using StocksApp_Assignment.Models;
 
 namespace Stocks_App_with_xUnit.Controllers;
 
-[Route("[controller]")]
 public class TradeController : Controller
 {
-    private readonly TradingOptions _tradingOptions;
-    private readonly IStocksService _stocksService;
     private readonly IFinnhubService _finnhubService;
+    private readonly IStocksService _stocksService;
+    private readonly IOptions<TradingOptions> _tradingOptions;
     private readonly IConfiguration _configuration;
 
-
-    /// <summary>
-    /// Constructor for TradeController that executes when a new object is created for the class
-    /// </summary>
-    /// <param name="tradingOptions">Injecting TradeOptions config through Options pattern</param>
-    /// <param name="stocksService">Injecting StocksService</param>
-    /// <param name="finnhubService">Injecting FinnhubService</param>
-    /// <param name="configuration">Injecting IConfiguration</param>
-    public TradeController(IOptions<TradingOptions> tradingOptions, IStocksService stocksService,
-        IFinnhubService finnhubService, IConfiguration configuration)
+    public TradeController(
+        IFinnhubService finnhubService,
+        IStocksService stocksService,
+        IOptions<TradingOptions> tradingOptions,
+        IConfiguration configuration)
     {
-        _tradingOptions = tradingOptions.Value;
-        _stocksService = stocksService;
         _finnhubService = finnhubService;
+        _stocksService = stocksService;
+        _tradingOptions = tradingOptions;
         _configuration = configuration;
     }
 
-
+    [HttpGet]
     [Route("/")]
-    [Route("[action]")]
-    [Route("~/[controller]")]
+    [Route("/Trade/Index")]
     public IActionResult Index()
     {
-        //reset stock symbol if not exists
-        if (string.IsNullOrEmpty(_tradingOptions.DefaultStockSymbol))
-            _tradingOptions.DefaultStockSymbol = "MSFT";
+        string stockSymbol =
+            (_tradingOptions.Value.DefaultStockSymbol ?? "NVDA").Trim();
 
+        Dictionary<string, object>? companyProfile =
+            _finnhubService.GetCompanyProfile(stockSymbol);
 
-        //get company profile from API server
-        Dictionary<string, object>? companyProfileDictionary =
-            _finnhubService.GetCompanyProfile(_tradingOptions.DefaultStockSymbol);
+        Dictionary<string, object>? stockQuote =
+            _finnhubService.GetStockPriceQuote(stockSymbol);
 
-        //get stock price quotes from API server
-        Dictionary<string, object>? stockQuoteDictionary =
-            _finnhubService.GetStockPriceQuote(_tradingOptions.DefaultStockSymbol);
-
-
-        //create model object
-        StockTrade stockTrade = new StockTrade() { StockSymbol = _tradingOptions.DefaultStockSymbol };
-
-        //load data from finnHubService into model object
-        if (companyProfileDictionary != null && stockQuoteDictionary != null)
+        if (companyProfile == null || stockQuote == null)
         {
-            stockTrade = new StockTrade()
-            {
-                StockSymbol = Convert.ToString(companyProfileDictionary["ticker"]),
-                StockName = Convert.ToString(companyProfileDictionary["name"]),
-                Price = Convert.ToDouble(stockQuoteDictionary["c"].ToString())
-            };
+            return Problem(
+                "Stock information could not be retrieved.");
         }
 
-        //Send Finnhub token to view
-        ViewBag.FinnhubToken = _configuration["FinnhubToken"];
+        StockTrade stockTrade = new StockTrade()
+        {
+            StockSymbol = stockSymbol,
+
+            StockName =
+                Convert.ToString(companyProfile["name"]),
+
+            Price =
+                Convert.ToDouble(
+                    stockQuote["c"].ToString(),
+                    CultureInfo.InvariantCulture),
+
+            Quantity = 0
+        };
+
+        ViewBag.FinnhubToken =
+            _configuration["FinnhubToken"];
 
         return View(stockTrade);
+    }
+
+    [HttpGet]
+    [Route("/stock-details")]
+    public IActionResult Details()
+    {
+        string stockSymbol =
+            (_tradingOptions.Value.DefaultStockSymbol ?? "NVDA").Trim();
+
+        Dictionary<string, object>? stockQuote =
+            _finnhubService.GetStockPriceQuote(stockSymbol);
+
+        if (stockQuote == null)
+        {
+            return Problem(
+                "Stock information could not be retrieved.");
+        }
+
+        StockDetails stockDetails = new StockDetails()
+        {
+            StockSymbol = stockSymbol,
+
+            CurrentPrice =
+                Convert.ToDouble(
+                    stockQuote["c"].ToString(),
+                    CultureInfo.InvariantCulture),
+
+            Change =
+                Convert.ToDouble(
+                    stockQuote["d"].ToString(),
+                    CultureInfo.InvariantCulture),
+
+            PercentChange =
+                Convert.ToDouble(
+                    stockQuote["dp"].ToString(),
+                    CultureInfo.InvariantCulture),
+
+            LowestPrice =
+                Convert.ToDouble(
+                    stockQuote["l"].ToString(),
+                    CultureInfo.InvariantCulture),
+
+            HighestPrice =
+                Convert.ToDouble(
+                    stockQuote["h"].ToString(),
+                    CultureInfo.InvariantCulture),
+
+            OpenPrice =
+                Convert.ToDouble(
+                    stockQuote["o"].ToString(),
+                    CultureInfo.InvariantCulture),
+
+            PreviousClosePrice =
+                Convert.ToDouble(
+                    stockQuote["pc"].ToString(),
+                    CultureInfo.InvariantCulture)
+        };
+
+        ViewBag.FinnhubToken =
+            _configuration["FinnhubToken"];
+
+        return View(stockDetails);
     }
 }

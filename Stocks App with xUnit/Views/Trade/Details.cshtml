@@ -1,9 +1,8 @@
-@model StocksApp_Assignment.Models.StockDetails
+@model Stocks_App_with_xUnit.Models.StockDetails
 
 @{
     ViewBag.Title = "Stock Details";
 }
-
 
 <input
     type="hidden"
@@ -15,7 +14,6 @@
     id="StockSymbol"
     value="@Model.StockSymbol" />
 
-
 <div class="box trading-panel">
 
     <div class="stock">
@@ -24,77 +22,77 @@
             @Model.StockSymbol
         </h1>
 
-
         <table>
 
             <tbody>
 
-                <tr>
-                    <td>Current:</td>
+            <tr>
+                <td>Current:</td>
 
-                    <th>
-                        <small>$</small>
+                <th>
+                    <small>$</small>
 
-                        <span class="live-price">
-                            @Model.CurrentPrice.ToString("N2")
-                        </span>
-                    </th>
-                </tr>
+                    <span class="live-price">
+                        @Model.CurrentPrice.ToString("N2")
+                    </span>
+                </th>
+            </tr>
 
+            <tr>
+                <td>Change:</td>
 
-                <tr>
-                    <td>Change:</td>
+                <th>
+                    @Model.Change.ToString("N2")
+                </th>
+            </tr>
 
-                    <th>
-                        @Model.Change.ToString("N2")
-                    </th>
-                </tr>
+            <tr>
+                <td>Percent Change:</td>
 
+                <th>
+                    @Model.PercentChange.ToString("N2")%
+                </th>
+            </tr>
 
-                <tr>
-                    <td>Percent Change:</td>
+            <tr>
+                <td>Lowest:</td>
 
-                    <th>
-                        @Model.PercentChange.ToString("N2")%
-                    </th>
-                </tr>
+                <th>
+                    <small>$</small>
+                    @Model.LowestPrice.ToString("N2")
+                </th>
+            </tr>
 
+            <tr>
+                <td>Highest:</td>
 
-                <tr>
-                    <td>Lowest:</td>
+                <th>
+                    <small>$</small>
+                    @Model.HighestPrice.ToString("N2")
+                </th>
+            </tr>
 
-                    <th>
-                        <small>$</small>
+            <tr>
+                <td>Open:</td>
 
-                        @Model.LowestPrice.ToString("N2")
-                    </th>
-                </tr>
+                <th>
+                    <small>$</small>
+                    @Model.OpenPrice.ToString("N2")
+                </th>
+            </tr>
 
+            <tr>
+                <td>Previous Close:</td>
 
-                <tr>
-                    <td>Highest:</td>
-
-                    <th>
-                        <small>$</small>
-
-                        @Model.HighestPrice.ToString("N2")
-                    </th>
-                </tr>
-
-                <tr>
-                    <td>Previous Close:</td>
-
-                    <th>
-                        <small>$</small>
-
-                        @Model.PreviousClosePrice.ToString("N2")
-                    </th>
-                </tr>
+                <th>
+                    <small>$</small>
+                    @Model.PreviousClosePrice.ToString("N2")
+                </th>
+            </tr>
 
             </tbody>
 
         </table>
-
 
         <a href="/">
             Back
@@ -104,5 +102,4 @@
 
 </div>
 
-
-<script src="~/FinnhubScript.js"></script>
+<script src="~/Scripts/FinnhubScript.js"></script>

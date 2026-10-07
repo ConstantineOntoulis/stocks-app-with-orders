@@ -177,7 +177,7 @@ public class StocksServiceTest
     {
         //Arrange 
         SellOrderRequest? sellOrderRequest = null;
-        
+
         //Assert
         Assert.Throws<ArgumentNullException>(() =>
         {
@@ -198,7 +198,7 @@ public class StocksServiceTest
             Price = 1,
             Quantity = sellOrderQuantity
         };
-        
+
         //Assert
         Assert.Throws<ArgumentException>(() =>
         {
@@ -218,12 +218,9 @@ public class StocksServiceTest
             Price = 1,
             Quantity = sellOrderQuantity
         };
-        
+
         //Assert
-        Assert.Throws<ArgumentException>(() =>
-        {
-            _stocksService.CreateSellOrder(sellOrderRequest);
-        });
+        Assert.Throws<ArgumentException>(() => { _stocksService.CreateSellOrder(sellOrderRequest); });
     }
 
     [Theory]
@@ -238,7 +235,7 @@ public class StocksServiceTest
             Price = sellOrderPrice,
             Quantity = 1
         };
-        
+
         //Assert
         Assert.Throws<ArgumentException>(() =>
         {
@@ -259,7 +256,7 @@ public class StocksServiceTest
             Price = sellOrderPrice,
             Quantity = 1
         };
-        
+
         //Act
         Assert.Throws<ArgumentException>(() =>
         {
@@ -277,7 +274,7 @@ public class StocksServiceTest
             Price = 1,
             Quantity = 1
         };
-        
+
         //Assert
         Assert.Throws<ArgumentException>(() =>
         {
@@ -297,7 +294,7 @@ public class StocksServiceTest
             Price = 1,
             Quantity = 1
         };
-        
+
         //Assert
         Assert.Throws<ArgumentException>(() =>
         {
@@ -318,14 +315,14 @@ public class StocksServiceTest
             Price = 1,
             Quantity = 1
         };
-        
+
         //Act
         SellOrderResponse sellOrderResponseCreate = _stocksService.CreateSellOrder(sellOrderRequest);
-        
+
         //Assert
         Assert.NotEqual(Guid.Empty, sellOrderResponseCreate.SellOrderID);
     }
-    
+
     #endregion
 
     #region GetBuyOrders
@@ -335,8 +332,8 @@ public class StocksServiceTest
     public void GetAllBuyOrders_DefaultList()
     {
         //Act
-        List<BuyOrderResponse> buyOrdersGet =  _stocksService.GetBuyOrders();
-        
+        List<BuyOrderResponse> buyOrdersGet = _stocksService.GetBuyOrders();
+
         //Assert
         Assert.Empty(buyOrdersGet);
     }
@@ -345,7 +342,7 @@ public class StocksServiceTest
     public void GetAllBuyOrders_WithFewBuyOrders()
     {
         //Arrange
-        
+
         //Create a list of buy orders with hard-coded data
         BuyOrderRequest buyOrderRequest1 = new BuyOrderRequest()
         {
@@ -355,7 +352,7 @@ public class StocksServiceTest
             Quantity = 1,
             DateAndTimeOfOrder = DateTime.Parse("2000-05-05 10:00")
         };
-        
+
         BuyOrderRequest buyOrderRequest2 = new BuyOrderRequest()
         {
             StockSymbol = "NVDA",
@@ -378,10 +375,10 @@ public class StocksServiceTest
             BuyOrderResponse buyOrderResponse = _stocksService.CreateBuyOrder(buyOrderRequest);
             buyOrders_response.Add(buyOrderResponse);
         }
-        
+
         //Act
         List<BuyOrderResponse> buyOrderResponse_Get = _stocksService.GetBuyOrders();
-        
+
         //Assert
         foreach (BuyOrderResponse buyOrder_response_from_add in buyOrders_response)
         {
@@ -398,7 +395,7 @@ public class StocksServiceTest
     {
         //Act
         List<SellOrderResponse> sellOrdersGet = _stocksService.GetSellOrders();
-        
+
         //Assert
         Assert.Empty(sellOrdersGet);
     }
@@ -407,7 +404,7 @@ public class StocksServiceTest
     public void GetSellOrders_WithFewSellOrders()
     {
         //Arrange
-        
+
         //Create a list of sell orders with hard-coded data
         SellOrderRequest sellOrderRequest1 = new SellOrderRequest()
         {
@@ -417,7 +414,7 @@ public class StocksServiceTest
             Quantity = 1,
             DateAndTimeOfOrder = DateTime.Parse("2000-05-05 10:00")
         };
-        
+
         SellOrderRequest sellOrderRequest2 = new SellOrderRequest()
         {
             StockSymbol = "NVDA",
@@ -426,7 +423,7 @@ public class StocksServiceTest
             Quantity = 1,
             DateAndTimeOfOrder = DateTime.Parse("2000-05-05 10:00")
         };
-        
+
         List<SellOrderRequest> sellOrderRequests = new List<SellOrderRequest>()
         {
             sellOrderRequest1,
@@ -440,10 +437,10 @@ public class StocksServiceTest
             SellOrderResponse sellOrderResponse = _stocksService.CreateSellOrder(sellOrderRequest);
             sellOrderResponse_ListForAdd.Add(sellOrderResponse);
         }
-        
+
         //Act
         List<SellOrderResponse> sellOrderResponse_Get = _stocksService.GetSellOrders();
-        
+
         //Assert
         foreach (SellOrderResponse sellOrderResponse_from_add in sellOrderResponse_ListForAdd)
         {

@@ -1,4 +1,4 @@
-@model StocksApp_Assignment.Models.StockTrade
+@model Stocks_App_with_xUnit.Models.StockTrade
 
 @{
     ViewBag.Title = "Trade";
@@ -14,7 +14,6 @@
     id="StockSymbol"
     value="@Model.StockSymbol" />
 
-
 <div class="box trading-panel">
 
     <div class="stock">
@@ -27,12 +26,18 @@
             @Model.StockSymbol
         </h2>
 
-
         <div>
             <small>$</small>
 
             <span class="live-price">
                 @Model.Price.ToString("N2")
+            </span>
+        </div>
+
+        <div>
+            Quantity:
+            <span id="live-quantity">
+                @Model.Quantity
             </span>
         </div>
 
@@ -44,5 +49,4 @@
 
 </div>
 
-
-<script src="/home/tino/RiderProjects/Stocks App with xUnit/Stocks App with xUnit/wwwroot/Scripts/FinnhubScript.js"></script>
+<script src="~/Scripts/FinnhubScript.js"></script>

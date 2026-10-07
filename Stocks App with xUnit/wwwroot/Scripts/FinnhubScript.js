@@ -1,32 +1,97 @@
-const token = document.querySelector("#FinnhubToken").value;
-const socket = new WebSocket(`wss://ws.finnhub.io?token=${token}`);
-var stockSymbol = document.getElementById("StockSymbol").value;
+const tokenElement = document.querySelector("#FinnhubToken");
+const symbolElement = document.querySelector("#StockSymbol");
 
-socket.addEventListener('open', function (event) {
-    socket.send(JSON.stringify({ 'type': 'subscribe', 'symbol': stockSymbol }))
-});
+if (tokenElement && symbolElement) {
 
-socket.addEventListener('message', function (event) {
+    const token = tokenElement.value;
 
-    if (event.data.type == "error") {
-        $(".price").text(event.data.msg);
-        return;
-    }
+    const stockSymbol =
+        symbolElement.value.trim();
 
-    var eventData = JSON.parse(event.data);
-    if (eventData) {
-        if (eventData.data) {
-            var updatedPrice = JSON.parse(event.data).data[0].p;
-            
-            $(".price").text(updatedPrice.toFixed(2)); 
+    const socket =
+        new WebSocket(`wss://ws.finnhub.io?token=${token}`);
+
+    socket.addEventListener("open", function () {
+
+        socket.send(JSON.stringify({
+            type: "subscribe",
+            symbol: stockSymbol
+        }));
+
+    });
+
+    socket.addEventListener("message", function (event) {
+
+        const eventData =
+            JSON.parse(event.data);
+
+        if (eventData.type === "error") {
+
+            console.error(
+                "Finnhub WebSocket error:",
+                eventData.msg
+            );
+
+            return;
+        }
+
+        if (
+            eventData.type !== "trade" ||
+            !eventData.data ||
+            eventData.data.length === 0
+        ) {
+            return;
+        }
+
+        const trade =
+            eventData.data[eventData.data.length - 1];
+
+        if (trade.s !== stockSymbol) {
+            return;
+        }
+
+        const priceElements =
+            document.querySelectorAll(".live-price");
+
+        priceElements.forEach(function (element) {
+
+            element.textContent =
+                Number(trade.p).toFixed(2);
+
+        });
+
+        const quantityElement =
+            document.querySelector("#live-quantity");
+
+        if (
+            quantityElement &&
+            trade.v !== undefined
+        ) {
+            quantityElement.textContent =
+                trade.v;
+        }
+    });
+
+    function unsubscribe() {
+
+        if (socket.readyState === WebSocket.OPEN) {
+
+            socket.send(JSON.stringify({
+                type: "unsubscribe",
+                symbol: stockSymbol
+            }));
+
         }
     }
-});
 
-var unsubscribe = function (symbol) {
-    socket.send(JSON.stringify({ 'type': 'unsubscribe', 'symbol': symbol }))
+    window.addEventListener(
+        "pagehide",
+        function () {
+
+            unsubscribe();
+
+            socket.close();
+
+        }
+    );
 }
-
-window.onunload = function () {
-    unsubscribe(stockSsymbol);
-};
