@@ -2,6 +2,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using ServiceContracts;
+using ServiceContracts.DTO;
 using Stocks_App_with_xUnit.Models;
 
 namespace Stocks_App_with_xUnit.Controllers;
@@ -126,5 +127,57 @@ public class TradeController : Controller
             _configuration["FinnhubToken"];
 
         return View(stockDetails);
+    }
+
+    [HttpPost]
+    [Route("/Trade/BuyOrder")]
+    public IActionResult BuyOrder(BuyOrderRequest buyOrderRequest)
+    {
+        //mutation: some piece of the state of the object changes
+        buyOrderRequest.DateAndTimeOfOrder = DateTime.Now;
+        
+        ModelState.Clear();
+        TryValidateModel(buyOrderRequest);
+
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Errors = ModelState.Values.SelectMany(e => e.Errors).Select(m => m.ErrorMessage).ToList();
+            StockTrade stockTrade = new StockTrade()
+            {
+                StockName = buyOrderRequest.StockName,
+                Quantity = buyOrderRequest.Quantity,
+                StockSymbol = buyOrderRequest.StockSymbol
+            };
+            return View("Index", stockTrade);
+        }
+
+        BuyOrderResponse buyOrderResponse = _stocksService.CreateBuyOrder(buyOrderRequest);
+        return RedirectToAction(nameof(Orders));
+    }
+    
+    [HttpPost]
+    [Route("/Trade/SellOrder")]
+    public IActionResult SellOrder(SellOrderRequest sellOrderRequest)
+    {
+        //mutation: some piece of the state of the object changes
+        sellOrderRequest.DateAndTimeOfOrder = DateTime.Now;
+        
+        ModelState.Clear();
+        TryValidateModel(sellOrderRequest);
+
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Errors = ModelState.Values.SelectMany(e => e.Errors).Select(m => m.ErrorMessage).ToList();
+            StockTrade stockTrade = new StockTrade()
+            {
+                StockName = sellOrderRequest.StockName,
+                Quantity = sellOrderRequest.Quantity,
+                StockSymbol = sellOrderRequest.StockSymbol
+            };
+            return View("Index", stockTrade);
+        }
+
+        SellOrderResponse sellOrderResponse = _stocksService.CreateSellOrder(sellOrderRequest);
+        return RedirectToAction(nameof(Orders));
     }
 }
