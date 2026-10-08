@@ -58,7 +58,7 @@ public class TradeController : Controller
                     stockQuote["c"].ToString(),
                     CultureInfo.InvariantCulture),
 
-            Quantity = 0
+            Quantity = _tradingOptions.Value.DefaultOrderQuantity
         };
 
         ViewBag.FinnhubToken =
@@ -146,7 +146,8 @@ public class TradeController : Controller
             {
                 StockName = buyOrderRequest.StockName,
                 Quantity = buyOrderRequest.Quantity,
-                StockSymbol = buyOrderRequest.StockSymbol
+                StockSymbol = buyOrderRequest.StockSymbol,
+                Price = buyOrderRequest.Price
             };
             return View("Index", stockTrade);
         }
@@ -172,12 +173,32 @@ public class TradeController : Controller
             {
                 StockName = sellOrderRequest.StockName,
                 Quantity = sellOrderRequest.Quantity,
-                StockSymbol = sellOrderRequest.StockSymbol
+                StockSymbol = sellOrderRequest.StockSymbol,
+                Price = sellOrderRequest.Price
             };
+            
+            ViewBag.FinnhubToken = _configuration["FinnhubToken"];
+            
             return View("Index", stockTrade);
         }
 
         SellOrderResponse sellOrderResponse = _stocksService.CreateSellOrder(sellOrderRequest);
         return RedirectToAction(nameof(Orders));
+    }
+
+    [HttpGet]
+    [Route("/Trade/Orders")]
+    public IActionResult Orders()
+    {
+        List<BuyOrderResponse> buyOrderResponses = _stocksService.GetBuyOrders();
+        List<SellOrderResponse> sellOrderResponses = _stocksService.GetSellOrders();
+
+        Orders orders = new Orders()
+        {
+            BuyOrders = buyOrderResponses,
+            SellOrders = sellOrderResponses
+        };
+        
+        return View(orders);
     }
 }
