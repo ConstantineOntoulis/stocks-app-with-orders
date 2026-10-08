@@ -60,6 +60,12 @@ if (tokenElement && symbolElement) {
 
         });
 
+        const orderPriceElement = document.querySelector("#order-price");
+        
+        if (orderPriceElement) {
+            orderPriceElement.value = Number(trade.price).toFixed(2);
+        }
+        
         const quantityElement =
             document.querySelector("#live-quantity");
 
