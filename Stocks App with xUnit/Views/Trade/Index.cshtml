@@ -7,12 +7,12 @@
 <input
     type="hidden"
     id="FinnhubToken"
-    value="@ViewBag.FinnhubToken" />
+    value="@ViewBag.FinnhubToken"/>
 
 <input
     type="hidden"
     id="StockSymbol"
-    value="@Model.StockSymbol" />
+    value="@Model.StockSymbol"/>
 
 <div class="box trading-panel">
 
@@ -41,9 +41,50 @@
             </span>
         </div>
 
-        <a href="/stock-details">
+        <a href="~/stock-details">
             View stock details
         </a>
+
+        <form method="post" action="~/Trade/BuyOrder" class="mt">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" name="StockSymbol" value="@Model.StockSymbol"/>
+            <input type="hidden" name="StockName" value="@Model.StockName"/>
+            <input type="hidden" name="Price" id="order-price"
+                   value="@Model.Price.ToString(System.Globalization.CultureInfo.InvariantCulture)"/>
+            
+            <label for="order-quantity" class="form-label">
+                Shares to trade:
+            </label>
+            
+            <input type="number" id="order-quantity" name="Quantity" class="form-input" min="1" max="100000" step="1" value="@Model.Quantity" required/>
+            
+            <div class="mt">
+                <button type="submit" class="button button-green-back" formaction="~/Trade/BuyOrder">
+                    Buy
+                </button>
+                
+                <button type="submit" class="button button-red-back" formaction="~/Trade/SellOrder">
+                    Sell
+                </button>
+            </div>
+
+        </form>
+        
+        @if (ViewBag.Errors is List<string> errors && errors.Count > 0)
+        {
+            <div class="mt text-red" role="alert">
+                @foreach (string error in errors)
+                {
+                    <p>@error</p>
+                }
+            </div>
+        }
+        
+        <div class="mt">
+            <a href="~/Trade/Orders">View All Orders</a>
+        </div>
 
     </div>
 
