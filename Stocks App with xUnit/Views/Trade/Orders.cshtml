@@ -1,0 +1,84 @@
+@model Stocks_App_with_xUnit.Models.Orders
+
+@{
+    ViewBag.Title = "Orders";
+}
+
+<div class="box">
+    <h2>Buy Orders</h2>
+    
+    @if (Model.BuyOrders.Count == 0)
+    {
+        <p>No buy orders have been placed.</p>
+    }
+    else
+    {
+        <table class="table w-100">
+            <thead>
+            <tr>
+                <th>Stock</th>
+                <th>Symbol</th>
+                <th>Date</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Trade Amount</th>
+            </tr>
+            </thead>
+            
+            <tbody>
+            @foreach (var order in Model.BuyOrders)
+            {
+                <tr>
+                    <td>@order.StockName</td>
+                    <td>@order.StockSymbol</td>
+                    <td>@order.DateAndTimeOfOrder.ToString("dd MMM yyyy HH:mm")</td>
+                    <td>@order.Quantity</td>
+                    <td>$@order.Price.ToString("N2")</td>
+                    <td>$@order.TradeAmount.ToString("N2")</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    
+    <h2 class="mt">Sell Orders</h2>
+    
+    @if (Model.SellOrders.Count == 0)
+    {
+        <p>No sell orders have been placed.</p>
+    }
+    else
+    {
+        <table class="table w-100">
+            <thead>
+            <tr>
+                <th>Stock</th>
+                <th>Symbol</th>
+                <th>Date</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Trade Amount</th>
+            </tr>
+            </thead>
+            
+            <tbody>
+            @foreach (var order in Model.SellOrders)
+            {
+                <tr>                       
+                    <td>@order.StockName</td>
+                    <td>@order.StockSymbol</td>
+                    <td>@order.DateAndTimeOfOrder.ToString("dd MMM yyyy HH:mm")</td>
+                    <td>@order.Quantity</td>
+                    <td>$@order.Price.ToString("N2")</td>
+                    <td>$@order.TradeAmount.ToString("N2")</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+    
+    <div class="mt">
+        <a href="~/Trade/Index">Back to trading</a>
+    </div>
+    
+</div>
