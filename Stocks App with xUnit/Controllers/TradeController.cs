@@ -201,11 +201,4 @@ public class TradeController : Controller
         
         return View(orders);
     }
-
-    [HttpDelete]
-    [Route("/Trade/Delete")]
-    public IActionResult DeleteOrder()
-    {
-        return View();
-    }
 }
