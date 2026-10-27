@@ -135,7 +135,7 @@ public class TradeController : Controller
     {
         //mutation: some piece of the state of the object changes
         buyOrderRequest.DateAndTimeOfOrder = DateTime.Now;
-        
+
         ModelState.Clear();
         TryValidateModel(buyOrderRequest);
 
@@ -155,14 +155,14 @@ public class TradeController : Controller
         BuyOrderResponse buyOrderResponse = _stocksService.CreateBuyOrder(buyOrderRequest);
         return RedirectToAction(nameof(Orders));
     }
-    
+
     [HttpPost]
     [Route("/Trade/SellOrder")]
     public IActionResult SellOrder(SellOrderRequest sellOrderRequest)
     {
         //mutation: some piece of the state of the object changes
         sellOrderRequest.DateAndTimeOfOrder = DateTime.Now;
-        
+
         ModelState.Clear();
         TryValidateModel(sellOrderRequest);
 
@@ -176,9 +176,9 @@ public class TradeController : Controller
                 StockSymbol = sellOrderRequest.StockSymbol,
                 Price = sellOrderRequest.Price
             };
-            
+
             ViewBag.FinnhubToken = _configuration["FinnhubToken"];
-            
+
             return View("Index", stockTrade);
         }
 
@@ -198,7 +198,7 @@ public class TradeController : Controller
             BuyOrders = buyOrderResponses,
             SellOrders = sellOrderResponses
         };
-        
+
         return View(orders);
     }
 }
