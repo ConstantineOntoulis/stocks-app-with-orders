@@ -45,7 +45,7 @@
             View stock details
         </a>
 
-        <form asp-action="BuyOrder" class="mt">
+        <form asp-controller="Trade" asp-action="BuyOrder" method="post" class="mt">
 
             @Html.AntiForgeryToken()
 
