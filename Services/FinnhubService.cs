@@ -9,15 +9,13 @@ public class FinnhubService : IFinnhubService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IConfiguration _configuration;
 
-    public FinnhubService(
-        IHttpClientFactory httpClientFactory,
-        IConfiguration configuration)
+    public FinnhubService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
     {
         _httpClientFactory = httpClientFactory;
         _configuration = configuration;
     }
 
-    public Dictionary<string, object>? GetCompanyProfile(string stockSymbol)
+    public async Task<Dictionary<string, object>?> GetCompanyProfile(string stockSymbol)
     {
         using HttpClient httpClient = _httpClientFactory.CreateClient();
 
@@ -33,13 +31,9 @@ public class FinnhubService : IFinnhubService
             Method = HttpMethod.Get
         };
 
-        HttpResponseMessage response = httpClient.Send(request);
+        HttpResponseMessage response = await httpClient.SendAsync(request);
 
-        Stream stream = response.Content.ReadAsStream();
-
-        using StreamReader streamReader = new StreamReader(stream);
-
-        string responseBody = streamReader.ReadToEnd();
+        string responseBody = await response.Content.ReadAsStringAsync();
 
         Dictionary<string, object>? responseDictionary =
             JsonSerializer.Deserialize<Dictionary<string, object>>(
@@ -60,7 +54,7 @@ public class FinnhubService : IFinnhubService
         return responseDictionary;
     }
 
-    public Dictionary<string, object>? GetStockPriceQuote(string stockSymbol)
+    public async Task<Dictionary<string, object>?> GetStockPriceQuote(string stockSymbol)
     {
         using HttpClient httpClient = _httpClientFactory.CreateClient();
 
@@ -76,13 +70,9 @@ public class FinnhubService : IFinnhubService
             Method = HttpMethod.Get
         };
 
-        HttpResponseMessage response = httpClient.Send(request);
+        HttpResponseMessage response = await httpClient.SendAsync(request);
 
-        Stream stream = response.Content.ReadAsStream();
-
-        using StreamReader streamReader = new StreamReader(stream);
-
-        string responseBody = streamReader.ReadToEnd();
+        string responseBody = await response.Content.ReadAsStringAsync();
 
         Dictionary<string, object>? responseDictionary =
             JsonSerializer.Deserialize<Dictionary<string, object>>(
