@@ -25,6 +25,8 @@ builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
+Rotativa.AspNetCore.RotativaConfiguration.Setup("wwwroot", wkhtmltopdfRelativePath: "Rotativa");
+
 app.UseStaticFiles();
 
 app.UseRouting();
