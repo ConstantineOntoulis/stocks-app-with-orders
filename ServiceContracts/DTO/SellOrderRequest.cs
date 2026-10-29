@@ -14,25 +14,22 @@ public class SellOrderRequest : IValidatableObject
     /// </summary>
     [Required(ErrorMessage = "Stock Name can't be null or empty")]
     public string StockName { get; set; }
-
-
+    
     /// <summary>
     /// Date and time of order, when it is placed by the user
     /// </summary>
     public DateTime DateAndTimeOfOrder { get; set; }
-
-
+    
     /// <summary>
     /// The number of stocks (shares) to sell
     /// </summary>
     [Range(1, 100000, ErrorMessage = "You can sell maximum of 100000 shares in single order. Minimum is 1.")]
     public uint Quantity { get; set; }
 
-
     /// <summary>
     /// The price of each stock (share)
     /// </summary>
-    [Range(1, 10000, ErrorMessage = "The maximum price of stock is 10000. Minimum is 1.")]
+    [Range(1.0, 10000.0, ErrorMessage = "The maximum price of stock is 10000. Minimum is 1.")]
     public double Price { get; set; }
 
 
