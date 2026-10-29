@@ -1,3 +1,5 @@
+using Entities;
+using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using Services;
 using Stocks_App_with_xUnit;
@@ -11,8 +13,15 @@ builder.Services.Configure<TradingOptions>(
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddScoped<IFinnhubService, FinnhubService>();
-builder.Services.AddSingleton<IStocksService, StocksService>();
+builder.Services.AddTransient<IFinnhubService, FinnhubService>();
+builder.Services.AddTransient<IStocksService, StocksService>();
+
+builder.Services.AddDbContext<OrdersDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
