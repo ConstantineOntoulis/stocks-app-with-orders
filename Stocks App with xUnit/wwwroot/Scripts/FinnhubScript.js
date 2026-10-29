@@ -50,20 +50,27 @@ if (tokenElement && symbolElement) {
             return;
         }
 
+        const price = Number(trade.p);
+
+        if (!Number.isFinite(price) || price <= 0) {
+            console.warn("Invalid stock price received:", trade.p);
+            return;
+        }
+
         const priceElements =
             document.querySelectorAll(".live-price");
 
         priceElements.forEach(function (element) {
 
-            element.textContent =
-                Number(trade.p).toFixed(2);
+            element.textContent = price.toFixed(2);
 
         });
 
-        const orderPriceElement = document.querySelector("#order-price");
-        
+        const orderPriceElement =
+            document.querySelector("#order-price");
+
         if (orderPriceElement) {
-            orderPriceElement.value = Number(trade.p).toFixed(2);
+            orderPriceElement.value = price.toFixed(2);
         }
         
         const quantityElement =
