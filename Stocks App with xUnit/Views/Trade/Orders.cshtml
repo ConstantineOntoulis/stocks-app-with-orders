@@ -4,8 +4,6 @@
     ViewBag.Title = "Orders";
 }
 
-<a asp-controller="Trade" asp-action="OrdersPDF" class="mr">Download as PDF</a>
-
 <div class="box">
     <h2>Buy Orders</h2>
     
@@ -81,6 +79,8 @@
     
     <div class="mt">
         <a asp-controller="Trade" asp-action="Index">Back to trading</a>
+        
+        <a asp-controller="Trade" asp-action="OrdersPDF" class="mr">Download as PDF</a>
     </div>
     
 </div>
