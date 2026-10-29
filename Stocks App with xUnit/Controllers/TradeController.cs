@@ -151,6 +151,9 @@ public class TradeController : Controller
                 StockSymbol = buyOrderRequest.StockSymbol,
                 Price = buyOrderRequest.Price
             };
+
+            ViewBag.FinnhubToken = _configuration["FinnhubToken"];
+
             return View("Index", stockTrade);
         }
 
