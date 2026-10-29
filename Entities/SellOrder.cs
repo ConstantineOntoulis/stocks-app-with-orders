@@ -35,6 +35,6 @@ public class SellOrder
     /// <summary>
     /// The price of each stock (share)
     /// </summary>
-    [Range(1, 10000, ErrorMessage = "The maximum price of stock is 10000 with Minimum of 1.")]
+    [Range(1.0, 10000.0, ErrorMessage = "The maximum price of stock is 10000 with Minimum of 1.")]
     public double Price { get; set; }
 }
