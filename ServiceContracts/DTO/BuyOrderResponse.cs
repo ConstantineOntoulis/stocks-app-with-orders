@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO;
 
-public class BuyOrderResponse
+public class BuyOrderResponse : IOrderResponse
 {
     /// <summary>
     /// The unique ID of the buy order
@@ -34,6 +34,8 @@ public class BuyOrderResponse
     /// The price of each stock (share)
     /// </summary>
     public double Price { get; set; }
+
+    public OrderType TypeOfOrder { get; }
     
     public double TradeAmount { get; set; }
 

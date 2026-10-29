@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ServiceContracts.DTO;
 
-public class SellOrderResponse
+public class SellOrderResponse : IOrderResponse
 {
     /// <summary>
     /// The unique ID of the sell order
@@ -40,8 +40,9 @@ public class SellOrderResponse
     /// </summary>
     public double Price { get; set; }
 
+    public OrderType TypeOfOrder { get; }
+    
     public double TradeAmount { get; set; }
-
 
     /// <summary>
     /// Checks if the current object and other (parameter) object values match
