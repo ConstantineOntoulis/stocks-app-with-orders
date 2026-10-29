@@ -35,7 +35,7 @@ public class BuyOrderResponse : IOrderResponse
     /// </summary>
     public double Price { get; set; }
 
-    public OrderType TypeOfOrder { get; }
+    public OrderType TypeOfOrder { get; } = OrderType.BuyOrder;
     
     public double TradeAmount { get; set; }
 

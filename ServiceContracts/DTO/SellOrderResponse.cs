@@ -40,7 +40,7 @@ public class SellOrderResponse : IOrderResponse
     /// </summary>
     public double Price { get; set; }
 
-    public OrderType TypeOfOrder { get; }
+    public OrderType TypeOfOrder { get; } = OrderType.SellOrder;
     
     public double TradeAmount { get; set; }
 
