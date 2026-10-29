@@ -63,7 +63,7 @@ if (tokenElement && symbolElement) {
         const orderPriceElement = document.querySelector("#order-price");
         
         if (orderPriceElement) {
-            orderPriceElement.value = Number(trade.price).toFixed(2);
+            orderPriceElement.value = Number(trade.p).toFixed(2);
         }
         
         const quantityElement =
