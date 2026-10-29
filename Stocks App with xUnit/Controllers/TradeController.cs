@@ -1,6 +1,8 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Rotativa.AspNetCore;
+using Rotativa.AspNetCore.Options;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using Stocks_App_with_xUnit.Models;
@@ -200,5 +202,30 @@ public class TradeController : Controller
         };
 
         return View(orders);
+    }
+
+    [Route("/OrdersPDF")]
+    public async Task<IActionResult> OrdersPDF()
+    {
+        List<IOrderResponse> orders = new List<IOrderResponse>();
+        orders.AddRange(await _stocksService.GetBuyOrders());
+        orders.AddRange(await _stocksService.GetSellOrders());
+
+        orders = orders.OrderByDescending(temp => temp.DateAndTimeOfOrder).ToList();
+
+        ViewBag.TradingOptions = _tradingOptions;
+        
+        //Return view as PDF
+        return new ViewAsPdf("OrdersPDF", orders, ViewData)
+        {
+            PageMargins = new Margins()
+            {
+                Top = 20,
+                Right = 20,
+                Bottom = 20,
+                Left = 20
+            },
+            PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape
+        };
     }
 }
