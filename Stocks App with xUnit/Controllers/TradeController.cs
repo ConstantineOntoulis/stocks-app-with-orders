@@ -29,16 +29,16 @@ public class TradeController : Controller
     [HttpGet]
     [Route("/")]
     [Route("/Trade/Index")]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         string stockSymbol =
             (_tradingOptions.Value.DefaultStockSymbol ?? "NVDA").Trim();
 
         Dictionary<string, object>? companyProfile =
-            _finnhubService.GetCompanyProfile(stockSymbol);
+            await _finnhubService.GetCompanyProfile(stockSymbol);
 
         Dictionary<string, object>? stockQuote =
-            _finnhubService.GetStockPriceQuote(stockSymbol);
+            await _finnhubService.GetStockPriceQuote(stockSymbol);
 
         if (companyProfile == null || stockQuote == null)
         {
@@ -69,13 +69,13 @@ public class TradeController : Controller
 
     [HttpGet]
     [Route("/stock-details")]
-    public IActionResult Details()
+    public async Task<IActionResult> Details()
     {
         string stockSymbol =
             (_tradingOptions.Value.DefaultStockSymbol ?? "NVDA").Trim();
 
         Dictionary<string, object>? stockQuote =
-            _finnhubService.GetStockPriceQuote(stockSymbol);
+            await _finnhubService.GetStockPriceQuote(stockSymbol);
 
         if (stockQuote == null)
         {
@@ -131,7 +131,7 @@ public class TradeController : Controller
 
     [HttpPost]
     [Route("/Trade/BuyOrder")]
-    public IActionResult BuyOrder(BuyOrderRequest buyOrderRequest)
+    public async Task<IActionResult> BuyOrder(BuyOrderRequest buyOrderRequest)
     {
         //mutation: some piece of the state of the object changes
         buyOrderRequest.DateAndTimeOfOrder = DateTime.Now;
@@ -152,13 +152,13 @@ public class TradeController : Controller
             return View("Index", stockTrade);
         }
 
-        BuyOrderResponse buyOrderResponse = _stocksService.CreateBuyOrder(buyOrderRequest);
+        BuyOrderResponse buyOrderResponse = await _stocksService.CreateBuyOrder(buyOrderRequest);
         return RedirectToAction(nameof(Orders));
     }
 
     [HttpPost]
     [Route("/Trade/SellOrder")]
-    public IActionResult SellOrder(SellOrderRequest sellOrderRequest)
+    public async Task<IActionResult> SellOrder(SellOrderRequest sellOrderRequest)
     {
         //mutation: some piece of the state of the object changes
         sellOrderRequest.DateAndTimeOfOrder = DateTime.Now;
@@ -182,16 +182,16 @@ public class TradeController : Controller
             return View("Index", stockTrade);
         }
 
-        SellOrderResponse sellOrderResponse = _stocksService.CreateSellOrder(sellOrderRequest);
+        SellOrderResponse sellOrderResponse = await _stocksService.CreateSellOrder(sellOrderRequest);
         return RedirectToAction(nameof(Orders));
     }
 
     [HttpGet]
     [Route("/Trade/Orders")]
-    public IActionResult Orders()
+    public async Task<IActionResult> Orders()
     {
-        List<BuyOrderResponse> buyOrderResponses = _stocksService.GetBuyOrders();
-        List<SellOrderResponse> sellOrderResponses = _stocksService.GetSellOrders();
+        List<BuyOrderResponse> buyOrderResponses = await _stocksService.GetBuyOrders();
+        List<SellOrderResponse> sellOrderResponses = await _stocksService.GetSellOrders();
 
         Orders orders = new Orders()
         {
