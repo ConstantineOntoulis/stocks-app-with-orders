@@ -14,7 +14,7 @@ public class StocksServiceTest
     {
         _stocksService = new StocksService(new OrdersDbContext(new DbContextOptionsBuilder<OrdersDbContext>().Options));
     }
-
+ 
     #region CreateBuyOrder
 
     [Fact]
