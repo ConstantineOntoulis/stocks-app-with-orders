@@ -231,4 +231,17 @@ public class TradeController : Controller
             PageOrientation = Rotativa.AspNetCore.Options.Orientation.Landscape
         };
     }
+    
+    [HttpGet]
+    public IActionResult GetServerStatus()
+    {
+        var status = new
+        {
+            Status = "Online",
+            Message = "Application is running successfully.",
+            Timestamp = DateTime.UtcNow
+        };
+
+        return Ok(status);
+    }
 }
